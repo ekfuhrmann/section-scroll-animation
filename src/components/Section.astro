@@ -1,0 +1,49 @@
+---
+import { Picture } from 'astro:assets'
+
+interface Props {}
+
+const {} = Astro.props
+---
+
+<section
+  class="group grid grid-cols-2"
+  data-animate="section"
+>
+  <div
+    class="ml-auto flex min-h-dvh max-w-xl flex-col justify-center space-y-16 p-56 group-even:order-last group-even:ml-0"
+  >
+    <slot />
+    <h2 class="text-lg font-bold">Dolor aliquip laboris</h2>
+    <p>
+      Nisi dolor labore quis est reprehenderit. Ex aliqua
+      laboris nisi mollit consectetur exercitation enim aute
+      proident fugiat sunt. Consectetur culpa ea dolor
+      culpa. Ea commodo ullamco ex ea amet nostrud amet
+      ipsum ad mollit occaecat anim. Velit est pariatur
+      excepteur irure eu esse officia nulla non. Dolore ea
+      aute labore excepteur ad. Dolor dolor labore do
+      pariatur excepteur duis cillum duis Lorem id occaecat
+      aliquip excepteur.
+    </p>
+    <p>
+      Nisi dolor labore quis est reprehenderit. Ex aliqua
+      laboris nisi mollit consectetur exercitation enim aute
+      proident fugiat sunt. Consectetur culpa ea dolor
+      culpa. Ea commodo ullamco ex ea amet nostrud amet
+      ipsum ad mollit occaecat anim. Velit est pariatur
+      excepteur irure eu esse officia nulla non. Dolore ea
+      aute labore excepteur ad. Dolor dolor labore do
+      pariatur excepteur duis cillum duis Lorem id occaecat
+      aliquip excepteur.
+    </p>
+  </div>
+  <div class="relative min-h-[150dvh]">
+    <Picture
+      src="https://source.unsplash.com/random"
+      alt=""
+      inferSize={true}
+      class="sticky inset-0 h-dvh w-full object-cover"
+    />
+  </div>
+</section>
