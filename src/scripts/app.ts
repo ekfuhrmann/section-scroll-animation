@@ -17,6 +17,34 @@ export const mmFilters = {
 }
 
 mm.add(mmFilters, (context) => {
+  let { isMobile, reduceMotion } = context.conditions ?? {}
+
+  if (isMobile || reduceMotion) return
+
+  const bgColors = [
+    'hsla(156, 98%, 26%, 1)',
+    'hsla(15, 25%, 48%, 1)',
+    'hsla(196, 100%, 34%, 1)',
+    'hsla(292, 53%, 43%, 1)',
+    'hsla(216, 66%, 27%, 1)',
+  ]
+
+  const bgTimeline = gsap.timeline()
+
+  bgColors.forEach((value) => {
+    bgTimeline.to('[data-animate="background"]', {
+      backgroundColor: value,
+    })
+  })
+
+  ScrollTrigger.create({
+    animation: bgTimeline,
+    trigger: '[data-animate="background"]',
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 1,
+  })
+
   gsap.set('[data-animate]', { opacity: 0 })
 
   ScrollTrigger.batch('[data-animate]', {
@@ -35,7 +63,7 @@ mm.add(mmFilters, (context) => {
         // kill the timeline when leaving the viewport
         el.timeline?.kill()
 
-        gsap.to(el, { opacity: 0 })
+        gsap.to(el.querySelector('img'), { opacity: 0 })
       })
     },
     onLeaveBack: (batch) => {
@@ -43,7 +71,7 @@ mm.add(mmFilters, (context) => {
         // kill the timeline when leaving the viewport
         el.timeline?.kill()
 
-        gsap.to(el, { opacity: 0 })
+        gsap.to(el.querySelector('img'), { opacity: 0 })
       })
     },
   })
@@ -66,14 +94,22 @@ mm.add(mmFilters, (context) => {
 
     tl.fromTo(
       el.querySelector('img'),
-      { opacity: 0, y },
+      { opacity: 0 },
       {
         opacity: 1,
+        delay: index * animationStagger,
+        duration: 1,
+      },
+    ).fromTo(
+      el.querySelector('img'),
+      { y },
+      {
         y: initialY,
         delay: index * animationStagger,
         ease: 'circ.out',
-        duration: 1,
+        duration: 0.75,
       },
+      0,
     )
 
     // store the timeline on the element

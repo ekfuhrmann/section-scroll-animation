@@ -10,11 +10,11 @@ const { image = 'https://source.unsplash.com/random' } =
 ---
 
 <section
-  class="group relative grid grid-cols-2"
+  class="group grid min-h-[200dvh] grid-cols-2"
   data-animate="section"
 >
   <div
-    class="sticky top-0 ml-auto flex max-w-xl flex-col justify-center space-y-16 self-start p-56 text-white group-even:order-last group-even:ml-0"
+    class="ml-auto flex max-w-xl flex-col justify-center space-y-16 self-start p-56 text-white group-even:order-last group-even:ml-0"
   >
     <slot />
     <h2 class="text-lg font-bold">Dolor aliquip laboris</h2>
@@ -41,12 +41,12 @@ const { image = 'https://source.unsplash.com/random' } =
       aliquip excepteur.
     </p>
   </div>
-  <div class="relative min-h-[150dvh]">
+  <div class="relative">
     <Picture
       src={image}
       alt=""
       inferSize={true}
-      class="sticky inset-0 h-dvh w-full object-cover"
+      class="top-0 h-dvh w-full object-cover"
     />
   </div>
 </section>
