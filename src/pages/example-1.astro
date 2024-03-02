@@ -1,55 +1,30 @@
 ---
-import { Picture } from 'astro:assets'
-
-interface Props {
-  image: string
-}
-
-const { image = 'https://source.unsplash.com/random' } =
-  Astro.props
+import Layout from '@/layouts/Layout.astro'
+import Section from '@/components/Section.astro'
 ---
 
-<section
-  class="group grid grid-cols-2"
-  data-animate="section"
->
-  <div
-    class="ml-auto flex max-w-xl flex-col justify-center space-y-16 self-start p-56 py-[50dvh] text-white group-even:order-last group-even:ml-0"
+<Layout title="Example Scroll Page Animation">
+  <main
+    class="flex flex-col gap-[10dvh] bg-[hsla(216,66%,27%,1)]"
+    data-animate="background"
   >
-    <slot />
-    <h2 class="text-lg font-bold">Dolor aliquip laboris</h2>
-    <p>
-      Nisi dolor labore quis est reprehenderit. Ex aliqua
-      laboris nisi mollit consectetur exercitation enim aute
-      proident fugiat sunt. Consectetur culpa ea dolor
-      culpa. Ea commodo ullamco ex ea amet nostrud amet
-      ipsum ad mollit occaecat anim. Velit est pariatur
-      excepteur irure eu esse officia nulla non. Dolore ea
-      aute labore excepteur ad. Dolor dolor labore do
-      pariatur excepteur duis cillum duis Lorem id occaecat
-      aliquip excepteur.
-    </p>
-    <p>
-      Nisi dolor labore quis est reprehenderit. Ex aliqua
-      laboris nisi mollit consectetur exercitation enim aute
-      proident fugiat sunt. Consectetur culpa ea dolor
-      culpa. Ea commodo ullamco ex ea amet nostrud amet
-      ipsum ad mollit occaecat anim. Velit est pariatur
-      excepteur irure eu esse officia nulla non. Dolore ea
-      aute labore excepteur ad. Dolor dolor labore do
-      pariatur excepteur duis cillum duis Lorem id occaecat
-      aliquip excepteur.
-    </p>
-  </div>
-  <div class="">
-    <Picture
-      src={image}
-      alt=""
-      inferSize={true}
-      class="fixed bottom-0 top-0 h-dvh w-1/2 bg-black/20 object-cover opacity-0 group-odd:right-0"
+    <Section
+      image="https://images.unsplash.com/photo-1708913156542-9042bb5410eb?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     />
-  </div>
-</section>
+    <Section
+      image="https://images.unsplash.com/photo-1577973082070-ba274c3d1d33?q=80&w=2535&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    />
+    <Section
+      image="https://images.unsplash.com/photo-1505576457712-b769c0c0a354?q=80&w=2572&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    />
+    <Section
+      image="https://images.unsplash.com/photo-1664276052807-cf69ca80cabe?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    />
+    <Section
+      image="https://images.unsplash.com/photo-1604456930969-37f67bcd6e1e?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    />
+  </main>
+</Layout>
 
 <script>
   import { gsap } from 'gsap'
@@ -100,10 +75,9 @@ const { image = 'https://source.unsplash.com/random' } =
       scrub: 2,
     })
 
+    gsap.set('[data-animate]', { opacity: 0 })
+
     ScrollTrigger.batch('[data-animate]', {
-      markers: true,
-      start: 'top 50%',
-      end: 'bottom 50%',
       onEnter: (batch) => {
         batch.forEach((el: AnimatedElement, i: number) => {
           setAnimation(el, i)
@@ -119,11 +93,7 @@ const { image = 'https://source.unsplash.com/random' } =
           // kill the timeline when leaving the viewport
           el.timeline?.kill()
 
-          gsap.to(el.querySelector('img'), {
-            opacity: 0,
-            yPercent: 150,
-            duration: 0.5,
-          })
+          gsap.to(el.querySelector('img'), { opacity: 0 })
         })
       },
       onLeaveBack: (batch) => {
@@ -131,12 +101,8 @@ const { image = 'https://source.unsplash.com/random' } =
           // kill the timeline when leaving the viewport
           el.timeline?.kill()
 
-          gsap.to(el.querySelector('img'), {
-            yPercent: -150,
-            duration: 0.5,
-            opacity: 0,
-          })
-        }, 0)
+          gsap.to(el.querySelector('img'), { opacity: 0 })
+        })
       },
     })
 
@@ -147,10 +113,14 @@ const { image = 'https://source.unsplash.com/random' } =
     ) {
       direction = direction || 1
 
-      const yPercent = -150 * direction
+      const y = `${150 * direction}dvh`
 
       const tl = gsap.timeline()
       const animationStagger = 0.25
+
+      const initialY = gsap.getProperty(el, 'y')
+
+      tl.set(el, { opacity: 1 })
 
       tl.fromTo(
         el.querySelector('img'),
@@ -162,9 +132,9 @@ const { image = 'https://source.unsplash.com/random' } =
         },
       ).fromTo(
         el.querySelector('img'),
-        { yPercent },
+        { y },
         {
-          yPercent: 0,
+          y: initialY,
           delay: index * animationStagger,
           ease: 'circ.out',
           duration: 0.75,
@@ -177,9 +147,3 @@ const { image = 'https://source.unsplash.com/random' } =
     }
   })
 </script>
-
-<!-- TODO:
-  * Locally host images and optimize them for web so they load quicker
-  * Build no-js/reduced motion experience more on-par with example 1
-  * Cleanup homepage
--->

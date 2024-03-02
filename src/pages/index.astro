@@ -4,24 +4,20 @@ import Section from '@/components/Section.astro'
 ---
 
 <Layout title="Example Scroll Page Animation">
-  <main
-    class="flex flex-col gap-[10dvh] bg-[hsla(216,66%,27%,1)]"
-    data-animate="background"
-  >
-    <Section
-      image="https://images.unsplash.com/photo-1708913156542-9042bb5410eb?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    />
-    <Section
-      image="https://images.unsplash.com/photo-1577973082070-ba274c3d1d33?q=80&w=2535&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    />
-    <Section
-      image="https://images.unsplash.com/photo-1505576457712-b769c0c0a354?q=80&w=2572&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    />
-    <Section
-      image="https://images.unsplash.com/photo-1664276052807-cf69ca80cabe?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    />
-    <Section
-      image="https://images.unsplash.com/photo-1604456930969-37f67bcd6e1e?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    />
-  </main>
+  <ul class="ml-32 list-disc">
+    <li>
+      <a
+        href="/example-1"
+        class="bold text-md text-blue-500 underline"
+        >Example 1</a
+      >
+    </li>
+    <li>
+      <a
+        href="/example-2"
+        class="bold text-md text-blue-500 underline"
+        >Example 2</a
+      >
+    </li>
+  </ul>
 </Layout>
