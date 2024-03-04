@@ -2,11 +2,10 @@
 import { Picture } from 'astro:assets'
 
 interface Props {
-  image: string
+  image: ImageMetadata | string
 }
 
-const { image = 'https://source.unsplash.com/random' } =
-  Astro.props
+const { image } = Astro.props
 ---
 
 <section

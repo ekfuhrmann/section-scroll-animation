@@ -1,20 +1,19 @@
 ---
-import { Picture } from 'astro:assets'
+import { Image } from 'astro:assets'
 
 interface Props {
-  image: string
+  image: ImageMetadata | string
 }
 
-const { image = 'https://source.unsplash.com/random' } =
-  Astro.props
+const { image } = Astro.props
 ---
 
 <section
-  class="group grid grid-cols-2"
+  class="group grid md:grid-cols-2"
   data-animate="section"
 >
   <div
-    class="ml-auto flex max-w-xl flex-col justify-center space-y-16 self-start p-56 py-[50dvh] text-white group-even:order-last group-even:ml-0"
+    class="order-last flex max-w-xl flex-col justify-center space-y-16 self-start p-56 text-white group-even:ml-0 md:order-none md:ml-auto md:py-[50dvh] group-even:md:order-last"
   >
     <slot />
     <h2 class="text-lg font-bold">Dolor aliquip laboris</h2>
@@ -41,12 +40,11 @@ const { image = 'https://source.unsplash.com/random' } =
       aliquip excepteur.
     </p>
   </div>
-  <div class="">
-    <Picture
+  <div class="motion-reduce:relative">
+    <Image
       src={image}
       alt=""
-      inferSize={true}
-      class="fixed bottom-0 top-0 h-dvh w-1/2 bg-black/20 object-cover opacity-0 group-odd:right-0"
+      class="w-full bg-black/20 object-cover motion-reduce:inset-0 md:fixed md:bottom-0 md:top-0 md:h-dvh md:max-h-none md:w-1/2 md:opacity-0 group-odd:md:right-0 motion-reduce:md:sticky motion-reduce:md:w-full motion-reduce:md:opacity-100"
     />
   </div>
 </section>
@@ -123,6 +121,7 @@ const { image = 'https://source.unsplash.com/random' } =
             opacity: 0,
             yPercent: 150,
             duration: 0.5,
+            clearProps: 'all',
           })
         })
       },
@@ -135,6 +134,7 @@ const { image = 'https://source.unsplash.com/random' } =
             yPercent: -150,
             duration: 0.5,
             opacity: 0,
+            clearProps: 'all',
           })
         }, 0)
       },
@@ -168,6 +168,7 @@ const { image = 'https://source.unsplash.com/random' } =
           delay: index * animationStagger,
           ease: 'circ.out',
           duration: 0.75,
+          clearProps: 'yPercent',
         },
         0,
       )
@@ -177,9 +178,3 @@ const { image = 'https://source.unsplash.com/random' } =
     }
   })
 </script>
-
-<!-- TODO:
-  * Locally host images and optimize them for web so they load quicker
-  * Build no-js/reduced motion experience more on-par with example 1
-  * Cleanup homepage
--->
