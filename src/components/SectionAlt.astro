@@ -73,74 +73,70 @@ const { image } = Astro.props
     let { isMobile, reduceMotion } =
       context.conditions ?? {}
 
+    // if mobile or reduced motion, don't animate
     if (isMobile || reduceMotion) return
 
-    const bgColors = [
-      'hsla(156, 98%, 26%, 1)',
-      'hsla(15, 25%, 48%, 1)',
-      'hsla(196, 100%, 34%, 1)',
-      'hsla(292, 53%, 43%, 1)',
-      'hsla(216, 66%, 27%, 1)',
-    ]
+    // refresh the ScrollTrigger for reloads
+    ScrollTrigger.refresh()
 
-    const bgTimeline = gsap.timeline()
-
-    bgColors.forEach((value) => {
-      bgTimeline.to('[data-animate="background"]', {
-        backgroundColor: value,
-      })
-    })
-
+    // set up the background animation
     ScrollTrigger.create({
-      animation: bgTimeline,
+      animation: setBackgroundAnimation(),
       trigger: '[data-animate="background"]',
       start: 'top top',
       end: 'bottom bottom',
       scrub: 2,
     })
 
-    ScrollTrigger.batch('[data-animate]', {
+    // set up the section animations
+    ScrollTrigger.batch('[data-animate="section"]', {
       start: 'top 50%',
       end: 'bottom 50%',
       onEnter: (batch) => {
         batch.forEach((el: AnimatedElement, i: number) => {
-          setAnimation(el, i)
+          setSectionAnimation(el, i)
         })
       },
       onEnterBack: (batch) => {
         batch.forEach((el: AnimatedElement, i: number) => {
-          setAnimation(el, i, -1)
+          setSectionAnimation(el, i, -1)
         })
       },
       onLeave: (batch) => {
         batch.forEach((el: AnimatedElement) => {
-          // kill the timeline when leaving the viewport
           el.timeline?.kill()
-
-          gsap.to(el.querySelector('img'), {
-            opacity: 0,
-            yPercent: 150,
-            duration: 0.5,
-            clearProps: 'all',
-          })
+          killSectionAnimation(el)
         })
       },
       onLeaveBack: (batch) => {
         batch.forEach((el: AnimatedElement) => {
-          // kill the timeline when leaving the viewport
           el.timeline?.kill()
-
-          gsap.to(el.querySelector('img'), {
-            yPercent: -150,
-            duration: 0.5,
-            opacity: 0,
-            clearProps: 'all',
-          })
+          killSectionAnimation(el, -1)
         }, 0)
       },
     })
 
-    function setAnimation(
+    function setBackgroundAnimation() {
+      const bgColors = [
+        'hsla(156, 98%, 26%, 1)',
+        'hsla(15, 25%, 48%, 1)',
+        'hsla(196, 100%, 34%, 1)',
+        'hsla(292, 53%, 43%, 1)',
+        'hsla(216, 66%, 27%, 1)',
+      ]
+
+      const bgTimeline = gsap.timeline()
+
+      bgColors.forEach((value) => {
+        bgTimeline.to('[data-animate="background"]', {
+          backgroundColor: value,
+        })
+      })
+
+      return bgTimeline
+    }
+
+    function setSectionAnimation(
       el: AnimatedElement,
       index: number = 0,
       direction?: -1 | 1,
@@ -175,6 +171,22 @@ const { image } = Astro.props
 
       // store the timeline on the element
       el.timeline = tl
+    }
+
+    function killSectionAnimation(
+      el: AnimatedElement,
+      direction?: -1 | 1,
+    ) {
+      direction = direction || 1
+
+      const yPercent = 150 * direction
+
+      gsap.to(el.querySelector('img'), {
+        yPercent,
+        opacity: 0,
+        duration: 0.5,
+        clearProps: 'all',
+      })
     }
   })
 </script>
